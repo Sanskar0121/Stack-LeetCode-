@@ -1,0 +1,129 @@
+CODE : 
+class MinStack:
+ 
+   
+    def __init__(self):
+        self.stack = []
+        self.minStack = []
+
+        
+
+    def push(self, val: int) -> None:
+        self.stack.append(val) 
+        val = min(val, self.minStack[-1] if self.minStack else val) 
+        self.minStack.append(val)
+        
+
+    def pop(self) -> None:
+        self.stack.pop() 
+        self.minStack.pop()
+        
+
+    def top(self) -> int:
+        return self.stack[-1]
+        
+
+    def getMin(self) -> int:
+        return self.minStack[-1]
+         
+
+
+# Your MinStack object will be instantiated and called as such:
+# obj = MinStack()
+# obj.push(val)
+# obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.getMin()
+
+EXPLANATION : 
+
+💡 What Is This Stack About?
+Normally in a stack, you can push, pop, and check the top, but if you also want to get the minimum element at any time, that usually takes O(n) time. This smart implementation does it in O(1) using an additional stack.
+
+🧱 Code Breakdown
+python
+Copy
+Edit
+class MinStack:
+Defines the MinStack class.
+
+🏗️ Constructor
+python
+Copy
+Edit
+def __init__(self):
+    self.stack = []
+    self.minStack = []
+self.stack is the normal stack that stores all elements.
+
+self.minStack keeps track of the minimum value at each level.
+
+Why another stack?
+
+It helps us remember the minimum when elements are popped off.
+
+⬆️ push(val)
+python
+Copy
+Edit
+def push(self, val: int) -> None:
+    self.stack.append(val) 
+    val = min(val, self.minStack[-1] if self.minStack else val) 
+    self.minStack.append(val)
+Add val to the main stack.
+
+Compute the minimum between:
+
+current val
+
+top of minStack (which holds the current min)
+
+Push the new min onto minStack.
+
+👉 This way, minStack[-1] will always give the min so far at any level.
+
+⬇️ pop()
+python
+Copy
+Edit
+def pop(self) -> None:
+    self.stack.pop() 
+    self.minStack.pop()
+Remove the top element from both stacks.
+
+This ensures minStack always stays in sync with stack.
+
+🔝 top()
+python
+Copy
+Edit
+def top(self) -> int:
+    return self.stack[-1]
+Return the top element of the main stack (i.e., most recently added value).
+
+📉 getMin()
+python
+Copy
+Edit
+def getMin(self) -> int:
+    return self.minStack[-1]
+Return the minimum element from minStack, which is always the current minimum.
+
+🧪 Example Walkthrough
+python
+Copy
+Edit
+obj = MinStack()
+obj.push(3)      # stack = [3], minStack = [3]
+obj.push(5)      # stack = [3, 5], minStack = [3, 3]
+obj.push(2)      # stack = [3, 5, 2], minStack = [3, 3, 2]
+obj.push(1)      # stack = [3, 5, 2, 1], minStack = [3, 3, 2, 1]
+obj.getMin()     # returns 1
+obj.pop()        # removes 1 → stack = [3, 5, 2], minStack = [3, 3, 2]
+obj.getMin()     # returns 2
+🔁 Time and Space Complexity
+Operation	Time	Space
+push	O(1)	O(n)
+pop	O(1)	O(n)
+top	O(1)	O(1)
+getMin	O(1)	O(1) 
