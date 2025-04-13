@@ -1,0 +1,109 @@
+CODE : 
+
+class Solution:
+    def isValid(self, s: str) -> bool:
+        stack = [] 
+        closetoopen = { ")" : "(", "]" : "[", "}" : "{" }
+
+        for c in s:
+            if c in closetoopen:
+                if stack and stack[-1] == closetoopen[c]:
+                    stack.pop() 
+                else:
+                    return False
+            else:
+                stack.append(c) 
+        
+        return True if not stack else False 
+
+EXPANATION : 
+
+🔍 Problem Statement
+The function isValid(s: str) -> bool checks whether a given string s that contains only parentheses ()[]{} is valid or not.
+
+A valid string must:
+
+Open brackets must be closed by the same type of brackets.
+
+Open brackets must be closed in the correct order.
+
+Every close bracket must have a corresponding open bracket of the same type.
+
+🧠 Intuition Behind the Code
+We use a stack data structure to keep track of open brackets and make sure each one is closed correctly in the right order.
+
+🧱 Code Breakdown
+python
+Copy
+Edit
+stack = []
+We create an empty list stack to keep track of the brackets we've seen.
+
+python
+Copy
+Edit
+closetoopen = { ")" : "(", "]" : "[", "}" : "{" }
+This dictionary maps each closing bracket to its corresponding opening bracket.
+
+This helps us quickly check if the current closing bracket matches the last open bracket.
+
+🔄 Loop Through Each Character
+python
+Copy
+Edit
+for c in s:
+Loop through each character c in the string s.
+
+Case 1: If c is a closing bracket
+python
+Copy
+Edit
+if c in closetoopen:
+If it's a closing bracket like ), ], or }...
+
+python
+Copy
+Edit
+if stack and stack[-1] == closetoopen[c]:
+    stack.pop()
+else:
+    return False
+Check if the stack is not empty and the top of the stack stack[-1] is the matching opening bracket.
+
+✅ If yes, pop it (they cancel each other out).
+
+❌ If no, return False (invalid string).
+
+Case 2: If c is an opening bracket
+python
+Copy
+Edit
+else:
+    stack.append(c)
+Just push it onto the stack to be matched later.
+
+✅ Final Check
+python
+Copy
+Edit
+return True if not stack else False
+If the stack is empty, that means all brackets matched correctly → return True.
+
+If anything is left in the stack → return False.
+
+🧪 Example Walkthrough
+For input: s = "{[()]}"
+
+{ → push → stack = [{]
+
+[ → push → stack = [{, []
+
+( → push → stack = [{, [, (]
+
+) → matches ( → pop → stack = [{, []
+
+] → matches [ → pop → stack = [{]
+
+} → matches { → pop → stack = []
+
+Stack is empty → ✅ Valid! 
