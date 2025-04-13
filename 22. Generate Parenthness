@@ -1,0 +1,117 @@
+CODE : 
+
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        stack = [] 
+        res = [] 
+
+        def backtrack(openN, closedN):
+            if openN == closedN == n:
+                res.append("".join(stack)) 
+                return 
+
+            if openN < n:
+                stack.append("(") 
+                backtrack(openN + 1, closedN) 
+                stack.pop()
+            if closedN < openN:
+               stack.append(")") 
+               backtrack(openN, closedN + 1)
+               stack.pop() 
+
+        backtrack(0, 0) 
+        return res 
+
+EXPLANAION : 
+🧩 What is the problem?
+You are given an integer n. You need to generate all valid combinations of n pairs of parentheses.
+
+Example: If n = 3, valid combinations are:
+
+css
+Copy
+Edit
+["((()))", "(()())", "(())()", "()(())", "()()()"]
+🎯 Goal
+We want to generate all combinations of n opening and n closing brackets that are valid (well-formed).
+
+📦 How the code works
+Step 1: Setup
+python
+Copy
+Edit
+stack = []      # keeps track of the current combination being built
+res = []        # stores all the valid combinations
+Step 2: Recursive Function backtrack(openN, closedN)
+This function tries to build all valid combinations.
+
+openN = number of opening brackets used so far
+
+closedN = number of closing brackets used so far
+
+🧠 Base case
+python
+Copy
+Edit
+if openN == closedN == n:
+    res.append("".join(stack))
+    return
+If we have used all n opening and n closing brackets: ✅ Add the current combination to the result.
+
+🛠️ Build the combination
+If we can still add more (:
+python
+Copy
+Edit
+if openN < n:
+    stack.append("(")
+    backtrack(openN + 1, closedN)
+    stack.pop()
+Add ( and increase open count.
+
+Then go deeper with recursion.
+
+After returning, remove the last ( → backtrack.
+
+If we can add a ) (only if closedN < openN):
+python
+Copy
+Edit
+if closedN < openN:
+    stack.append(")")
+    backtrack(openN, closedN + 1)
+    stack.pop()
+Add ) and increase close count.
+
+Only add ) if we have more ( already used.
+
+Then backtrack as before.
+
+🚀 Finally
+python
+Copy
+Edit
+backtrack(0, 0)
+return res
+Start with 0 opening and 0 closing brackets.
+
+Collect all valid combinations in res.
+
+🧪 Example: n = 2
+Here's how it builds:
+
+(( )) ✔
+
+(() ) ✔
+
+()( ) ✔
+
+())( ✖ invalid, never happens because the code prevents it!
+
+✅ Summary
+Symbol	Meaning
+stack	building one combination
+res	all valid combinations
+backtrack()	tries all possibilities but only keeps valid ones
+openN < n	Can add more (
+closedN < openN	Can add more ) 
