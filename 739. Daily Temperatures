@@ -1,0 +1,95 @@
+CODE : 
+
+class Solution:
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        res = [0] * len(temperatures) 
+        stack = [] 
+
+        for i, t in enumerate(temperatures):
+            while stack and t > stack[-1][0]:
+                stackT, stackInd = stack.pop() 
+                res[stackInd] = i - stackInd 
+            stack.append((t, i)) 
+        return res 
+
+EXPLANATION : 
+
+🔍 Problem:
+You're given a list of daily temperatures. For each day, you have to find how many days you have to wait until a warmer temperature. If there's no future day with a warmer temperature, put 0.
+
+✅ Example:
+python
+Copy code
+Input:  [73, 74, 75, 71, 69, 72, 76, 73]
+Output: [1, 1, 4, 2, 1, 1, 0, 0]
+Day 0 → 73 → wait 1 day for 74
+
+Day 1 → 74 → wait 1 day for 75
+
+Day 2 → 75 → wait 4 days for 76
+
+...
+
+Day 6 → 76 → no warmer day → 0
+
+🧠 Key Idea:
+Use a stack to keep track of the indices and temperatures that are still waiting for a warmer day.
+
+📘 Code Breakdown:
+python
+Copy code
+res = [0] * len(temperatures) 
+Create a result list filled with 0s.
+
+If no warmer day is found later, it will remain 0.
+
+python
+Copy code
+stack = [] 
+This stack will store (temperature, index) pairs.
+
+It helps us compare current temperature with previous ones.
+
+python
+Copy code
+for i, t in enumerate(temperatures):
+Loop through the list with both index i and temperature t.
+
+python
+Copy code
+    while stack and t > stack[-1][0]:
+If stack is not empty AND current temperature is greater than the temperature at the top of the stack…
+
+That means we have found a warmer day for the day on top of the stack.
+
+python
+Copy code
+        stackT, stackInd = stack.pop() 
+        res[stackInd] = i - stackInd 
+Pop that day from the stack (which was waiting for a warmer day).
+
+Calculate how many days it took (i - stackInd) and store it in res.
+
+python
+Copy code
+    stack.append((t, i)) 
+Push the current day (temperature, index) into the stack.
+
+It might need to wait for a warmer day too.
+
+python
+Copy code
+return res
+Finally, return the result.
+
+📦 Visual Example (Step-by-Step for [73, 74, 75]):
+i=0, t=73 → stack = [(73, 0)]
+
+i=1, t=74 → 74 > 73 → pop → res[0] = 1 → stack = [(74, 1)]
+
+i=2, t=75 → 75 > 74 → pop → res[1] = 1 → stack = [(75, 2)]
+
+🔁 Stack helps us:
+Keep track of the temperatures waiting for a warmer day.
+
+Avoid nested loops → makes it efficient (O(n) time).
